@@ -12,14 +12,17 @@ function subtract(a, b) { return a - b;}
 function multiply(a, b) { return a * b;}
 function divide(a, b) { return a / b;}
 
-function comparePrecedence(func1, func2) {
-    let lowerPrec = ['add', 'subtract']
-    let higherPrec = ['multiply', 'divide']
-    let func1Name = func1.name;
-    let func2Name = func2.name;
-    if (higherPrec.includes(func1Name) && lowerPrec.includes(func2Name)) {
+function comparePrecedence(newOper, stackTopOper) {
+    if (stackTopOper === '(') {
         return 1;
-    } else if (lowerPrec.includes(func1Name) && higherPrec.includes(func2Name)) {
+    }
+    let lowerPrec = ['add', 'subtract'];
+    let higherPrec = ['multiply', 'divide'];
+    let newOperName = newOper.name;
+    let stackTopName = stackTopOper.name;
+    if (higherPrec.includes(newOperName) && lowerPrec.includes(stackTopName)) {
+        return 1;
+    } else if (lowerPrec.includes(newOperName) && higherPrec.includes(stackTopName)) {
         return -1;
     }
     return 0;
@@ -30,7 +33,7 @@ function prepareEvalArray() {
     let i = 0;
     while (i < expr.length) {
         if (typeof expr[i] == "function" || expr[i] === "(" || expr[i] === ")") {
-            exprPrepared.push(item);
+            exprPrepared.push(expr[i]);
             i++;
         } else {
             let strNum = "";
@@ -55,7 +58,9 @@ function evaluate() {
     let exprPrepared = prepareEvalArray();
     operators = [];
     numbers = [];
-    for (item in exprPrepared) {
+    console.log(exprPrepared);
+    for (let i = 0; i < exprPrepared.length; i++) {
+        item = exprPrepared[i];
         if (typeof item == "number") {
             numbers.push(item);
         } else if (typeof item == "function") {
@@ -82,7 +87,10 @@ function evaluate() {
         processOperator();
     }
     expr = []; //clear memory
-    return numbers.pop(); 
+    let retValue = numbers.pop();
+    ans = retValue;
+    console.log(retValue);
+    return retValue; 
 }
 
 function display(output) {
@@ -103,22 +111,24 @@ function bindNumbers() {
 // BIND OPERATORS
 function bindOperators() {
     let eval = document.querySelector('#return');
+    let ansBtn = document.querySelector('#ans');
     let plus = document.querySelector('#plus');
     let minus = document.querySelector('#minus');
-    let multiply = document.querySelector('#multiply');
-    let divide = document.querySelector('#divide');
+    let multiplyBtn = document.querySelector('#multiply');
+    let divideBtn = document.querySelector('#divide');
     let leftparen = document.querySelector("#leftp");
     let rightparen = document.querySelector('#rightp');
     let decimal = document.querySelector("#decimal")
 
-    eval.addEventListener('click', function() {
+    eval.addEventListener('click', () => {
         let output = evaluate();
         display(output);
     });
+    ansBtn.addEventListener('click', () => expr.push(ans));
     plus.addEventListener('click', () => expr.push(add));
     minus.addEventListener('click', () => expr.push(subtract));
-    multiply.addEventListener('click', () => expr.push(multiply));
-    divide.addEventListener('click', () => expr.push(divide));
+    multiplyBtn.addEventListener('click', () => expr.push(multiply));
+    divideBtn.addEventListener('click', () => expr.push(divide));
     leftparen.addEventListener('click', () => expr.push('('));
     rightparen.addEventListener('click', () => expr.push(')'));
     decimal.addEventListener('click', () => expr.push('.'));

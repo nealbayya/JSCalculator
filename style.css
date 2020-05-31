@@ -6,27 +6,17 @@ header {
     padding-bottom: 15px;
 }
 
-.outer {
-    display: flex;
-    justify-content: center;
-}
 .calc-container {
     font-family: "Roboto Mono";
     margin: 20px;
     border: 3px solid black;
-    border-radius: 10%;
     padding: 20px;
     display: grid;
     justify-items: center;
-    grid-template-columns: repeat(4, 1f);
-    grid-template-rows: repeat(10, 1f);
-    grid-auto-rows: 1fr;
-    grid-auto-columns: 1fr;
+    grid-template-columns: 1f 1f 1f 1fr;
+    grid-template-rows: 2f 1f 1f 1f 1f 1f 1f;
     grid-gap: 8px;
-    grid-template-areas:    "outrow1 outrow1 outrow1 outrow1"
-                            "outrow2 outrow2 outrow2 outrow2"
-                            "outrow3 outrow3 outrow3 outrow3"
-                            "outrow4 outrow4 outrow4 outrow4"
+    grid-template-areas:    "output output output output"
                             ". clear backspace ."
                             "leftp rightp sqrt divide"
                             "seven eight nine multiply"
@@ -42,17 +32,16 @@ button {
     display: block;
     padding: 10px;
     width: 100%;
-    border-radius: 25%;
+    border-color: black;
 }
 
 button img {
     height: 15px;  
 }
 
-#outrow1    { grid-area: outrow1; }
-#outrow2    { grid-area: outrow2;}
-#outrow3    { grid-area: outrow3;}
-#outrow4    { grid-area: outrow4;}
+#output { 
+    grid-area: output;
+}
 #clear      { grid-area: clear;}
 #backspace  { grid-area: backspace;}
 #leftp      { grid-area: leftp;}
@@ -75,8 +64,3 @@ button img {
 #decimal    { grid-area: decimal;}
 #ans        { grid-area: ans;}
 #return     { grid-area: return;}
-
-.output {
-    padding: 10px;
-    justify-self: end;
-}
